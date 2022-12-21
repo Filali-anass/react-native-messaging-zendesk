@@ -77,6 +77,26 @@ loginUser('< BACKEND_GENERATED_JWT_TOKEN >');
 logoutUser();
 ```
 
+- get messages count
+
+```js
+import { subscribe, unsubscribe } from 'react-native-messaging-zendesk';
+
+// ...
+
+// subscribe to messagesCountChanged
+subscribe('messagesCountChanged', (messagesCount) => {
+  // do stuff with messagesCountChanged
+});
+
+// dont forget to unsubscribe
+React.useEffect(() => {
+  return () => {
+    unsubscribe('messagesCountChanged');
+  };
+}, []);
+```
+
 ## Contributing
 
 See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.

@@ -3,9 +3,11 @@ import * as React from 'react';
 import { StyleSheet, View, Button } from 'react-native';
 import {
   initSdk,
-  openChat,
+  showMessaging,
   loginUser,
   logoutUser,
+  subscribe,
+  unsubscribe,
 } from 'react-native-messaging-zendesk';
 
 export default function App() {
@@ -13,11 +15,15 @@ export default function App() {
     initSdk({
       android: '< ANDROID_CHAT_CHANNEL_ID >',
       ios: '< IOS_CHAT_CHANNEL_ID >',
+    }).then(() => {
+      subscribe('messagesCountChanged', (messagesCount) => {
+        console.log({ messagesCount });
+      });
     });
   };
 
   const performOpenChat = () => {
-    openChat();
+    showMessaging();
   };
 
   const performLoginUser = () => {
@@ -27,6 +33,12 @@ export default function App() {
   const performLogoutUser = () => {
     logoutUser();
   };
+
+  React.useEffect(() => {
+    return () => {
+      unsubscribe('messagesCountChanged');
+    };
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -43,5 +55,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    gap: 2,
   },
 });

@@ -7,9 +7,11 @@ import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.module.annotations.ReactModule;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 
 import kotlin.Unit;
@@ -17,6 +19,8 @@ import zendesk.android.FailureCallback;
 import zendesk.android.SuccessCallback;
 import zendesk.android.Zendesk;
 import zendesk.android.ZendeskUser;
+import zendesk.android.events.ZendeskEvent;
+import zendesk.android.events.ZendeskEventListener;
 import zendesk.messaging.android.DefaultMessagingFactory;
 
 @ReactModule(name = MessagingZendeskModule.NAME)
@@ -33,6 +37,59 @@ public class MessagingZendeskModule extends ReactContextBaseJavaModule {
     return NAME;
   }
 
+  ZendeskEventListener zendeskEventListener =
+    new ZendeskEventListener() {
+      @Override
+      public void onEvent(@NonNull ZendeskEvent zendeskEvent) {
+        if (zendeskEvent instanceof ZendeskEvent.UnreadMessageCountChanged) {
+          // Your custom action...
+          Log.i("MessagingZendeskApp", "count changed " + ((ZendeskEvent.UnreadMessageCountChanged) zendeskEvent).getCurrentUnreadCount());
+
+          sendMessagesCount(getReactApplicationContext(), ((ZendeskEvent.UnreadMessageCountChanged) zendeskEvent).getCurrentUnreadCount());
+        } else if (zendeskEvent instanceof ZendeskEvent.AuthenticationFailed){
+          // Your custom action...
+        }
+      }
+    };
+
+  private void sendMessagesCount(ReactContext reactContext, int messagesCount){
+    reactContext
+      .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+      .emit("messagesCountChanged", messagesCount);
+  }
+
+  @ReactMethod
+  public void addMessagesCountListener() {
+    // Keep: Required for RN built in Event Emitter Calls.
+    Zendesk.getInstance().addEventListener(zendeskEventListener);
+  }
+
+  @ReactMethod
+  public void removeMessagesCountListener() {
+    // Keep: Required for RN built in Event Emitter Calls.
+    Zendesk.getInstance().removeEventListener(zendeskEventListener);
+  }
+
+  @ReactMethod
+  public void subscribe(String eventName) {
+    if(eventName.equals("messagesCountChanged")){
+      Zendesk.getInstance().addEventListener(zendeskEventListener);
+    }
+  }
+
+  @ReactMethod
+  public void unsubscribe(String eventName) {
+    if(eventName.equals("messagesCountChanged")) {
+      Zendesk.getInstance().removeEventListener(zendeskEventListener);
+    }
+  }
+
+  @ReactMethod
+  public void addListener(String eventName) {}
+
+  @ReactMethod
+  public void removeListeners(int count) {}
+
   @ReactMethod
     public void initSdk (String channelKey, Promise promise) {
         try {
@@ -40,11 +97,12 @@ public class MessagingZendeskModule extends ReactContextBaseJavaModule {
                     getReactApplicationContext(),
                     channelKey,
                     zendesk -> {
-                      Log.i("MessagingZendesk", "Initialization successful");
+                      Log.i("MessagingZendeskApp", "Initialization successful");
+                      // zendesk.addEventListener(zendeskEventListener);
                       promise.resolve(true);
                     },
                     error -> {
-                      Log.e("MessagingZendesk", "Messaging failed to initialize", error);
+                      Log.e("MessagingZendeskApp", "Messaging failed to initialize", error);
                       promise.reject(error);
                     },
                     new DefaultMessagingFactory());
@@ -58,13 +116,13 @@ public class MessagingZendeskModule extends ReactContextBaseJavaModule {
         Zendesk.getInstance().loginUser(jwtToken, new SuccessCallback<ZendeskUser>() {
             @Override
             public void onSuccess(ZendeskUser value) {
-              Log.i("MessagingZendesk", "LoginUser successful");
+              Log.i("MessagingZendeskApp", "LoginUser successful");
               promise.resolve(true);
           }
         }, new FailureCallback<Throwable>() {
             @Override
             public void onFailure(@NonNull Throwable error) {
-              Log.e("MessagingZendesk", "LoginUser error", error);
+              Log.e("MessagingZendeskApp", "LoginUser error", error);
               promise.reject(error);
             }
         });
@@ -75,13 +133,13 @@ public class MessagingZendeskModule extends ReactContextBaseJavaModule {
         Zendesk.getInstance().logoutUser(new SuccessCallback<Unit>() {
             @Override
             public void onSuccess(Unit value) {
-              Log.i("MessagingZendesk", "logoutUser successful");
+              Log.i("MessagingZendeskApp", "logoutUser successful");
               promise.resolve(true);
             }
         }, new FailureCallback<Throwable>() {
             @Override
             public void onFailure(@NonNull Throwable error) {
-              Log.e("MessagingZendesk", "logoutUser error", error);
+              Log.e("MessagingZendeskApp", "logoutUser error", error);
               promise.reject(error);
             }
         });
@@ -93,7 +151,7 @@ public class MessagingZendeskModule extends ReactContextBaseJavaModule {
             Zendesk.getInstance().getMessaging().showMessaging(getCurrentActivity());
             promise.resolve(true);
         } catch (Exception err) {
-            Log.e("MessagingZendesk", "Messaging failed to initialize", err);
+            Log.e("MessagingZendeskApp", "Messaging failed to initialize", err);
             promise.reject(err);
         }
     }

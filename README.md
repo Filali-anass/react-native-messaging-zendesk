@@ -14,6 +14,29 @@ See the [IOS integration guide](https://developer.zendesk.com/documentation/zend
 npm install react-native-messaging-zendesk
 ```
 
+add zendesk maven repo to android/build.gradle
+
+```gradle
+allprojects {
+    repositories {
+        // ...
+        maven {
+            url "https://zendesk.jfrog.io/artifactory/repo"
+        }
+    }
+}
+```
+
+add zendesk messaging dependecy to android/app/build.gradle
+
+```gradle
+
+dependencies {
+    // ...
+    implementation "zendesk.messaging:messaging-android:2.8.0"
+}
+```
+
 ## Usage
 
 - initialize SDK

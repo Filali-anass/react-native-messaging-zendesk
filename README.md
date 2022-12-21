@@ -14,9 +14,17 @@ See the [IOS integration guide](https://developer.zendesk.com/documentation/zend
 npm install react-native-messaging-zendesk
 ```
 
-add zendesk maven repo to android/build.gradle
+add zendesk maven repo to android/build.gradle and change compileSdkVersion to 33
 
 ```gradle
+// ...
+
+buildscript {
+    ext {
+        compileSdkVersion = 33
+
+// ...
+
 allprojects {
     repositories {
         // ...
@@ -55,11 +63,11 @@ initSdk({
 - open the chat Screen
 
 ```js
-import { openChat } from 'react-native-messaging-zendesk';
+import { showMessaging } from 'react-native-messaging-zendesk';
 
 // ...
 
-openChat();
+showMessaging();
 ```
 
 - authenticated Access
@@ -67,7 +75,7 @@ openChat();
 See the [Enabling authenticated visitors for messaging with Zendesk SDKs](https://developer.zendesk.com/documentation/zendesk-web-widget-sdks/sdks/web/enabling_auth_visitors/)
 
 ```js
-import { openChat } from 'react-native-messaging-zendesk';
+import { loginUser, logoutUser } from 'react-native-messaging-zendesk';
 
 // ...
 

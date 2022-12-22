@@ -302,8 +302,9 @@ PODS:
   - React-jsinspector (0.70.6)
   - React-logger (0.70.6):
     - glog
-  - react-native-messaging-zendesk (0.1.0):
+  - react-native-messaging-zendesk (0.1.3):
     - React-Core
+    - ZendeskSDKMessaging
   - React-perflogger (0.70.6)
   - React-RCTActionSheet (0.70.6):
     - React-Core/RCTActionSheetHeaders (= 0.70.6)
@@ -374,6 +375,27 @@ PODS:
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
+  - Zendesk (1.8.0):
+    - ZendeskSDKConversationKit (~> 1.6.0)
+  - ZendeskSDKConversationKit (1.6.0):
+    - ZendeskSDKFayeClient (~> 1.2.0)
+    - ZendeskSDKHTTPClient (~> 0.9.0)
+    - ZendeskSDKStorage (~> 0.5.0)
+  - ZendeskSDKFayeClient (1.2.0):
+    - ZendeskSDKLogger (~> 0.5.0)
+    - ZendeskSDKSocketClient (~> 1.2.0)
+  - ZendeskSDKHTTPClient (0.9.0):
+    - ZendeskSDKLogger (~> 0.5.0)
+  - ZendeskSDKLogger (0.5.0)
+  - ZendeskSDKMessaging (2.8.0):
+    - Zendesk (~> 1.8.0)
+    - ZendeskSDKConversationKit (~> 1.6.0)
+    - ZendeskSDKUIComponents (~> 2.3.0)
+  - ZendeskSDKSocketClient (1.2.0):
+    - ZendeskSDKLogger (~> 0.5.0)
+  - ZendeskSDKStorage (0.5.0):
+    - ZendeskSDKLogger (~> 0.5.0)
+  - ZendeskSDKUIComponents (2.3.0)
 
 DEPENDENCIES:
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
@@ -454,6 +476,15 @@ SPEC REPOS:
     - OpenSSL-Universal
     - SocketRocket
     - YogaKit
+    - Zendesk
+    - ZendeskSDKConversationKit
+    - ZendeskSDKFayeClient
+    - ZendeskSDKHTTPClient
+    - ZendeskSDKLogger
+    - ZendeskSDKMessaging
+    - ZendeskSDKSocketClient
+    - ZendeskSDKStorage
+    - ZendeskSDKUIComponents
 
 EXTERNAL SOURCES:
   boost:
@@ -562,7 +593,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: b4a65947391c658450151275aa406f2b8263178f
   React-jsinspector: 60769e5a0a6d4b32294a2456077f59d0266f9a8b
   React-logger: 1623c216abaa88974afce404dc8f479406bbc3a0
-  react-native-messaging-zendesk: 7cdb00b4c09d702bd6709bfc697f17393635f27f
+  react-native-messaging-zendesk: 09d5901bbb97f260057918c004d37368e81670fd
   React-perflogger: 8c79399b0500a30ee8152d0f9f11beae7fc36595
   React-RCTActionSheet: 7316773acabb374642b926c19aef1c115df5c466
   React-RCTAnimation: 5341e288375451297057391227f691d9b2326c3d
@@ -578,6 +609,15 @@ SPEC CHECKSUMS:
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
   Yoga: 99caf8d5ab45e9d637ee6e0174ec16fbbb01bcfc
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
+  Zendesk: bc72c7a3c0284c717f3220c27dc7308876d1b353
+  ZendeskSDKConversationKit: d4c9f11cdc6dac0488fb79a04d3a4bad7fc58bce
+  ZendeskSDKFayeClient: c1d4b9973cdf999c7a717c981c4cd4c6e1186f93
+  ZendeskSDKHTTPClient: 3d4b59eb72555d5cf84fd9761712762890e1d12b
+  ZendeskSDKLogger: 9d80689480792be806f3c777124c87bbaed9394f
+  ZendeskSDKMessaging: d087596e699cf076c2bda39dea55498c399d4e4d
+  ZendeskSDKSocketClient: 4c11b499acc0c4abe55c5574a74ff8135b7b7624
+  ZendeskSDKStorage: be97db5c9418cecbd15e1b24b732cc0e8e10a991
+  ZendeskSDKUIComponents: b9a3a6d3036ebd093229a2c7e7c598afc870fb47
 
 PODFILE CHECKSUM: 87d3047fafeb81e8fb2118a1d0432c0f3cee3e49
 

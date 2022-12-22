@@ -42,21 +42,17 @@ export function initSdk(channels: {
   android: string;
   ios: string;
 }): Promise<boolean> {
-  if (Platform.OS !== 'android') return new Promise((resolve) => resolve(true));
   return MessagingZendesk.initSdk(Platform.select(channels));
 }
 
 export function showMessaging(): void {
-  if (Platform.OS !== 'android') return;
   return MessagingZendesk.showMessaging();
 }
 
 export function loginUser(jwt: string): Promise<boolean> {
-  if (Platform.OS !== 'android') return new Promise((resolve) => resolve(true));
   return MessagingZendesk.loginUser(jwt);
 }
 
 export function logoutUser(): void {
-  if (Platform.OS !== 'android') return;
   return MessagingZendesk.logoutUser();
 }

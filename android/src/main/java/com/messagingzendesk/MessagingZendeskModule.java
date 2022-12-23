@@ -55,7 +55,7 @@ public class MessagingZendeskModule extends ReactContextBaseJavaModule {
   private void sendMessagesCount(ReactContext reactContext, int messagesCount){
     reactContext
       .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-      .emit("messagesCountChanged", messagesCount);
+      .emit("unreadMessageCountChanged", messagesCount);
   }
 
   @ReactMethod
@@ -72,14 +72,14 @@ public class MessagingZendeskModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void subscribe(String eventName) {
-    if(eventName.equals("messagesCountChanged")){
+    if(eventName.equals("unreadMessageCountChanged")){
       Zendesk.getInstance().addEventListener(zendeskEventListener);
     }
   }
 
   @ReactMethod
   public void unsubscribe(String eventName) {
-    if(eventName.equals("messagesCountChanged")) {
+    if(eventName.equals("unreadMessageCountChanged")) {
       Zendesk.getInstance().removeEventListener(zendeskEventListener);
     }
   }

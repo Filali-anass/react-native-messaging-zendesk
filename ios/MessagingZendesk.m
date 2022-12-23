@@ -10,6 +10,10 @@ RCT_EXTERN_METHOD(loginUser: (NSString *)jwtToken resolver:(RCTPromiseResolveBlo
 
 RCT_EXTERN_METHOD(logoutUser: (RCTPromiseResolveBlock *)resolve rejecter: (RCTPromiseRejectBlock *)reject)
 
+RCT_EXTERN_METHOD(subscribe: (NSString *)eventName)
+
+RCT_EXTERN_METHOD(unsubscribe: (NSString *)eventName)
+
 + (BOOL)requiresMainQueueSetup
 {
   return NO;

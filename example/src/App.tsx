@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Button } from 'react-native';
+import { StyleSheet, View, Button, Text } from 'react-native';
 import {
   initSdk,
   showMessaging,
@@ -11,16 +11,8 @@ import {
 } from 'react-native-messaging-zendesk';
 
 export default function App() {
-  const performInitSdk = () => {
-    initSdk({
-      android: '< ANDROID_CHAT_CHANNEL_ID >',
-      ios: '< IOS_CHAT_CHANNEL_ID >',
-    }).then(() => {
-      subscribe('messagesCountChanged', (messagesCount) => {
-        console.log({ messagesCount });
-      });
-    });
-  };
+  const [unreadMessagesCount, setUnreadMessagesCount] =
+    React.useState<number>(0);
 
   const performOpenChat = () => {
     showMessaging();
@@ -35,17 +27,32 @@ export default function App() {
   };
 
   React.useEffect(() => {
+    initSdk({
+      android: '< ANDROID_CHAT_CHANNEL_ID >',
+      ios: '< IOS_CHAT_CHANNEL_ID >',
+    }).then(() => {
+      subscribe('unreadMessageCountChanged', (messagesCount) => {
+        setUnreadMessagesCount(messagesCount);
+      });
+    });
+
     return () => {
-      unsubscribe('messagesCountChanged');
+      unsubscribe('unreadMessageCountChanged');
     };
   }, []);
 
   return (
     <View style={styles.container}>
-      <Button title="Init Sdk" onPress={() => performInitSdk()} />
-      <Button title="Login User" onPress={() => performLoginUser()} />
-      <Button title="Logout User" onPress={() => performLogoutUser()} />
-      <Button title="Open Chat" onPress={() => performOpenChat()} />
+      <Text>Unread Messages: {unreadMessagesCount}</Text>
+      <View style={styles.buttonContainer}>
+        <Button title="Login User" onPress={() => performLoginUser()} />
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button title="Logout User" onPress={() => performLogoutUser()} />
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button title="Open Chat" onPress={() => performOpenChat()} />
+      </View>
     </View>
   );
 }
@@ -55,6 +62,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 2,
+  },
+  buttonContainer: {
+    marginVertical: 10,
+    width: 250,
   },
 });

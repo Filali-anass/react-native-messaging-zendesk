@@ -92,15 +92,15 @@ import { subscribe, unsubscribe } from 'react-native-messaging-zendesk';
 
 // ...
 
-// subscribe to messagesCountChanged
-subscribe('messagesCountChanged', (messagesCount) => {
-  // do stuff with messagesCountChanged
+// subscribe to unreadMessageCountChanged
+subscribe('unreadMessageCountChanged', (messagesCount) => {
+  // do stuff with unreadMessageCountChanged
 });
 
 // dont forget to unsubscribe
 React.useEffect(() => {
   return () => {
-    unsubscribe('messagesCountChanged');
+    unsubscribe('unreadMessageCountChanged');
   };
 }, []);
 ```
